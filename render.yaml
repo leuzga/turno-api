@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: turno-api
+    runtime: node
+    buildCommand: pnpm install
+    startCommand: node index.js
+    envVars:
+      - key: DB_HOST
+        value: pgsql.n8nelite.dev
+      - key: DB_PORT
+        value: 5432
+      - key: DB_USER
+        value: admin_db
+      - key: DB_NAME
+        value: turnoAPI
+      - key: DB_PASSWORD
+        sync: false
