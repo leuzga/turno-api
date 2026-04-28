@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Turnos — API Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <span class="logo">⬡ Turnos API</span>
+    <span class="base-url">http://localhost:3500</span>
+  </header>
+
+  <main>
+    <!-- Panel izquierdo: endpoints -->
+    <aside class="panel-left">
+
+      <!-- USERS -->
+      <section class="model-section">
+        <div class="model-title" onclick="toggle(this)">
+          <span>Users</span><span class="chevron">▾</span>
+        </div>
+        <p class="model-desc">Gestión de usuarios del sistema. Cada usuario puede generar tickets de atención asociados a una tienda.</p>
+        <div class="endpoints">
+
+          <button class="endpoint" data-method="GET" data-url="/usuarios" onclick="call(this)">
+            <span class="badge get">GET</span>
+            <span class="endpoint-info">
+              <span class="url">/usuarios</span>
+              <span class="desc">Retorna la lista completa de usuarios registrados.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="GET" data-url="/usuarios/:id" data-params="id" onclick="call(this)">
+            <span class="badge get">GET</span>
+            <span class="endpoint-info">
+              <span class="url">/usuarios/:id</span>
+              <span class="desc">Busca y retorna un usuario por su ID único.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="POST" data-url="/usuarios" data-body='{"fullname":"","password":""}' onclick="call(this)">
+            <span class="badge post">POST</span>
+            <span class="endpoint-info">
+              <span class="url">/usuarios</span>
+              <span class="desc">Crea un nuevo usuario. La contraseña se encripta automáticamente.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="PUT" data-url="/usuarios/:id" data-params="id" data-body='{"fullname":"","password":""}' onclick="call(this)">
+            <span class="badge put">PUT</span>
+            <span class="endpoint-info">
+              <span class="url">/usuarios/:id</span>
+              <span class="desc">Actualiza los datos de un usuario existente.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="DELETE" data-url="/usuarios/:id" data-params="id" onclick="call(this)">
+            <span class="badge delete">DELETE</span>
+            <span class="endpoint-info">
+              <span class="url">/usuarios/:id</span>
+              <span class="desc">Elimina un usuario. Sus tickets asociados se eliminan en cascada.</span>
+            </span>
+          </button>
+
+        </div>
+      </section>
+
+      <!-- STORES -->
+      <section class="model-section">
+        <div class="model-title" onclick="toggle(this)">
+          <span>Stores</span><span class="chevron">▾</span>
+        </div>
+        <p class="model-desc">Registro de tiendas o locales comerciales. Cada tienda puede recibir tickets de atención de los usuarios.</p>
+        <div class="endpoints">
+
+          <button class="endpoint" data-method="GET" data-url="/tiendas" onclick="call(this)">
+            <span class="badge get">GET</span>
+            <span class="endpoint-info">
+              <span class="url">/tiendas</span>
+              <span class="desc">Retorna todas las tiendas registradas en el sistema.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="GET" data-url="/tiendas/:id" data-params="id" onclick="call(this)">
+            <span class="badge get">GET</span>
+            <span class="endpoint-info">
+              <span class="url">/tiendas/:id</span>
+              <span class="desc">Obtiene el detalle completo de una tienda por su ID.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="POST" data-url="/tiendas" data-body='{"store_name":"","category_store":"","owner_name":"","phone_number":"","address":"","city":"","state":"","postal_code":"","opening_hours":"","services_offered":"","price_range":""}' onclick="call(this)">
+            <span class="badge post">POST</span>
+            <span class="endpoint-info">
+              <span class="url">/tiendas</span>
+              <span class="desc">Registra una nueva tienda con su información completa de contacto y ubicación.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="PUT" data-url="/tiendas/:id" data-params="id" data-body='{"store_name":"","category_store":"","owner_name":"","phone_number":"","address":"","city":"","state":"","postal_code":"","opening_hours":"","services_offered":"","price_range":""}' onclick="call(this)">
+            <span class="badge put">PUT</span>
+            <span class="endpoint-info">
+              <span class="url">/tiendas/:id</span>
+              <span class="desc">Actualiza la información de una tienda existente.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="DELETE" data-url="/tiendas/:id" data-params="id" onclick="call(this)">
+            <span class="badge delete">DELETE</span>
+            <span class="endpoint-info">
+              <span class="url">/tiendas/:id</span>
+              <span class="desc">Elimina una tienda. Los tickets asociados se eliminan en cascada.</span>
+            </span>
+          </button>
+
+        </div>
+      </section>
+
+      <!-- TICKETS -->
+      <section class="model-section">
+        <div class="model-title" onclick="toggle(this)">
+          <span>Tickets</span><span class="chevron">▾</span>
+        </div>
+        <p class="model-desc">Sistema de turnos de atención. Un ticket vincula a un usuario con una tienda en una fecha y hora determinada.</p>
+        <div class="endpoints">
+
+          <button class="endpoint" data-method="GET" data-url="/tickets" onclick="call(this)">
+            <span class="badge get">GET</span>
+            <span class="endpoint-info">
+              <span class="url">/tickets</span>
+              <span class="desc">Lista todos los tickets registrados en el sistema.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="GET" data-url="/tickets/:id" data-params="id" onclick="call(this)">
+            <span class="badge get">GET</span>
+            <span class="endpoint-info">
+              <span class="url">/tickets/:id</span>
+              <span class="desc">Retorna el detalle de un ticket específico por su ID.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="POST" data-url="/tickets" data-body='{"date_time":"","status":"Creado","observation":""}' onclick="call(this)">
+            <span class="badge post">POST</span>
+            <span class="endpoint-info">
+              <span class="url">/tickets</span>
+              <span class="desc">Genera un nuevo ticket de atención. El estado inicial debe ser "Creado".</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="PUT" data-url="/tickets/:id" data-params="id" data-body='{"status":"","observation":""}' onclick="call(this)">
+            <span class="badge put">PUT</span>
+            <span class="endpoint-info">
+              <span class="url">/tickets/:id</span>
+              <span class="desc">Actualiza el estado del ticket: Creado → En Progreso → Atendido / Cancelado.</span>
+            </span>
+          </button>
+
+          <button class="endpoint" data-method="DELETE" data-url="/tickets/:id" data-params="id" onclick="call(this)">
+            <span class="badge delete">DELETE</span>
+            <span class="endpoint-info">
+              <span class="url">/tickets/:id</span>
+              <span class="desc">Elimina un ticket del sistema de forma permanente.</span>
+            </span>
+          </button>
+
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- Panel derecho: respuesta -->
+    <section class="panel-right">
+      <div class="response-header" id="response-header">
+        <span id="response-label">Selecciona un endpoint</span>
+        <span class="status-badge" id="status-badge"></span>
+      </div>
+
+      <!-- Formulario dinámico -->
+      <div class="form-area" id="form-area" style="display:none">
+        <div id="params-area"></div>
+        <div id="body-area"></div>
+        <button class="send-btn" id="send-btn" onclick="send()">Enviar</button>
+      </div>
+
+      <!-- JSON output -->
+      <div class="json-area" id="json-area">
+        <span class="placeholder">← Elige un endpoint para ver la respuesta</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
