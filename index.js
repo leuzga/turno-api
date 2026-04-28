@@ -13,10 +13,10 @@ const fastify = Fastify({ logger: true });
 await fastify.register(cors, {});
 await fastify.register(fastifyStatic, { root: path.join(__dirname, 'public') });
 
-//POST - Inserciones                C-REATE
-//GET - Consulta                    R-EAD
-//PUT, PATCH - Actualizaciones      U-PDATE
-//DELETE - Borrado                  D-ELETE
+// POST - Inserciones                C-REATE
+// GET - Consulta                    R-EAD
+// PUT, PATCH - Actualizaciones      U-PDATE
+// DELETE - Borrado                  D-ELETE
 
 rutas.forEach((ruta) => {
     fastify.route(ruta);
@@ -25,7 +25,12 @@ rutas.forEach((ruta) => {
 try {
     await db.sync();
     console.log('Base de datos sincronizada');
-    await fastify.listen({ port: 3500 });
+    
+    const port = Number(process.env.PORT) || 3500;
+    const host = '0.0.0.0';
+    
+    await fastify.listen({ port, host });
+    console.log(`Server listening on http://${host}:${port}`);
 } catch(err) {
     fastify.log.error(err);
     process.exit(1);
