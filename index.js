@@ -22,6 +22,11 @@ rutas.forEach((ruta) => {
     fastify.route(ruta);
 });
 
+// HEALTH CHECK - para Render y cron-job
+fastify.get('/health', async () => {
+    return { status: 'ok', time: new Date().toISOString() };
+});
+
 try {
     await db.sync();
     console.log('Base de datos sincronizada');
